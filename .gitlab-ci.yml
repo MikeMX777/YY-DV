@@ -1,0 +1,25 @@
+image: cb-registry.yaya.yo/cloudbus/images:ansible2.9.4
+
+before_script:
+ - export TZ=Asia/Yekaterinburg
+ - date
+ - export ANSIBLE_HOST_KEY_CHECKING=False
+
+stages:
+  - deploy
+
+deploy:
+  extends: .deploy_template
+  only:
+    variables:
+      - $ACTION =~ /deploy|erase|restart/
+
+.deploy_template:
+  tags:
+    - cb-test
+  stage: deploy
+  script:
+    - ansible-playbook -i $CI_PROJECT_DIR/ansible/hosts -e "host=all ansible_user=${ANSIBLE_USER} ansible_password=${ANSIBLE_PWD}" -t "$ACTION" $CI_PROJECT_DIR/ansible/bingo.yaml
+  only:
+    - tags
+    - triggers
