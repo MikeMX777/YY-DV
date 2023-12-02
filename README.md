@@ -43,7 +43,7 @@ Postgres
 ################################################################################################################################################
 1) БД Postgres об этом намекало имя пользователя в конфиге
 2) Все сервисы разворачиваются через docker-compose 
-3) Базу на проде решено было не наполнять из bingo(долго), а при ините восстановить дамп.
+3) Базу на проде решено было не наполнять из bingo(долго), а при ините восстановить дамп. (В репе дамп запакован, GitHub не зает загружать больше 100м, в локальном GitLab файл распакован, можно было сделать доп шаг распаковки в ansible)
 4) В БД не было индексов -> из-за этого медленно отдавал запросы. Особенно спец составленные для тяжести):
 SELECT sessions.id, sessions.start_time, customers.id, customers.name, customers.surname, customers.birthday, customers.email, movies.id, movies.name, movies.year, movies.duration FROM sessions INNER JOIN customers ON sessions.customer_id = customers.id INNER JOIN movies ON sessions.movie_id = movies.id WHERE sessions.id IN 25 ORDER BY movies.year DESC, movies.name ASC, customers.id, sessions.id DESC LIMIT 100000
 ################################################################################################################################################
@@ -67,4 +67,3 @@ NGINX
 Хочу сказать спасибо всем кто причастен к этой тренировке, итоговый проект - это просто огонь, как квест проходишь. Удачи всем! Пишите, звоните. А, хотелось бы брелок))
 
 Михаил
-markov-1810@ya.ru
