@@ -1,0 +1,15 @@
+- name: Login to registry
+  docker_login:
+    registry: "{{ REGISTRY_URL }}"
+    username: "{{ REGISTRY_USER }}"
+    password: "{{ REGISTRY_PWD }}"
+    reauthorize: yes
+
+- name: Include postgres
+  import_tasks: postgres.yaml
+
+
+- name: Log out from registry
+  docker_login:
+    registry: "{{ REGISTRY_URL }}"
+    state: absent

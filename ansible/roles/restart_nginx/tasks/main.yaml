@@ -1,0 +1,6 @@
+- name: "Restart contaner nginx"
+  docker_compose:
+    project_src: "{{ nginx_home }}"
+    build: no
+    restarted: yes
+  when: "inventory_hostname in groups.get('nginx', [])"

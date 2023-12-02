@@ -1,0 +1,12 @@
+- name: "Delete contaner"
+  docker_compose:
+    project_src: "{{ bingo_dir }}"
+    build: no
+    state: absent
+  when: "inventory_hostname in groups.get('nodes', [])"
+
+- name: Delete persistent directories
+  file:
+    path: '{{ bingo_dir }}/'
+    state: absent
+  when: "inventory_hostname in groups.get('nodes', [])"

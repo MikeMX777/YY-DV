@@ -1,0 +1,6 @@
+- name: "Restart postgres"
+  docker_compose:
+    project_src: "{{ pg_dir }}"
+    build: no
+    restarted: yes
+  when: "inventory_hostname in groups.get('postgres', [])"

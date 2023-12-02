@@ -1,0 +1,10 @@
+student_email: markov-1810@ya.ru
+postgres_cluster:
+  hosts:
+  - address: 10.22.10.24
+    port: 5432
+  user: bingo
+  password: Y&Ywhyyyy
+  db_name: bingo
+  ssl_mode: disable
+  use_closest_node: false

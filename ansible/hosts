@@ -1,0 +1,9 @@
+[nginx]
+cb-balancer01-test.yaya.yo
+
+[nodes]
+cb-opldap-node01.yaya.yo
+cb-opldap-node02.yaya.yo
+
+[postgres]
+cb-wiki01.yaya.yo

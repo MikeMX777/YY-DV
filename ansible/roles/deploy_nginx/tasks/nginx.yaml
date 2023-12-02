@@ -1,0 +1,31 @@
+---
+
+- name: my command
+  command: echo NGINX
+  when: "inventory_hostname in groups.get('nginx', [])"
+
+
+- name: Create persistent directories for nginx
+  file:
+    path: '{{ item }}'
+    state: directory
+    recurse: yes
+  with_items:
+    - "{{ nginx_home }}"
+  when: "inventory_hostname in groups.get('nginx', [])"
+
+- name: Copy content of directory 'files'
+  copy:
+    src: files/nginx/
+    dest: "{{ nginx_home }}/"
+  when: "inventory_hostname in groups.get('nginx', [])"
+
+- name: "Create nginx contaner on {{ inventory_hostname }}"
+  docker_compose:
+    project_src: "{{ nginx_home }}"
+    build: yes
+    nocache: yes
+    recreate: always
+  when: "inventory_hostname in groups.get('nginx', [])"
+
+

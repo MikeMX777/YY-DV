@@ -1,0 +1,2 @@
+{{ 59 | random }} * * * * /usr/sbin/logrotate {{ bingo_dir }}/logrotate.conf --state {{ bingo_dir }}/logrotate-state --verbose
+# * * * * * docker ps -f health=unhealthy --format "docker restart {% raw %}{{.ID}}{% endraw %}" | sh >> {{ bingo_dir }}/reloader.log 2>&1

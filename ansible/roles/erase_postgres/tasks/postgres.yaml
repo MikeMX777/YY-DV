@@ -1,0 +1,12 @@
+- name: "Delete contaner postgres"
+  docker_compose:
+    project_src: "{{ pg_dir }}"
+    build: no
+    state: absent
+  when: "inventory_hostname in groups.get('postgres', [])"
+
+- name: Delete persistent directories
+  file:
+    path: '{{ pg_dir }}/'
+    state: absent
+  when: "inventory_hostname in groups.get('postgres', [])"

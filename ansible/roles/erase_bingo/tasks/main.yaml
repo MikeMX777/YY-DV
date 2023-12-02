@@ -1,0 +1,2 @@
+- name: Include a kafka
+  import_tasks: bingo.yaml

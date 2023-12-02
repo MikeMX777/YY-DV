@@ -1,0 +1,38 @@
+version: '3.6'
+services:
+  bingo:
+    image: 'cb-registry.yaya.yo/cloudbus/infra/ansible-test:bingo_v03'
+    container_name: "bingo01"
+    userns_mode: "host"
+    command: run_server
+    restart: unless-stopped
+    ports:
+      - '8080:14822'
+    networks:
+      - bingo
+    volumes:
+      - './conf/config.yaml:/opt/bingo/config.yaml'
+      - './logs/main.log:/opt/bongo/logs/516abe8e27/main.log'
+    healthcheck:
+      test: [ "CMD", "/usr/bin/wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:14822/ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+  autoheal:
+    userns_mode: "host"
+    restart: always
+    image: willfarrell/autoheal
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  bingo:
+    name: bingo
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.4.27.0/24
+          gateway: 10.4.27.1

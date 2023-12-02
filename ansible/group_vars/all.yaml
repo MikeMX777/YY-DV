@@ -1,0 +1,30 @@
+ansible_python_interpreter: "/usr/bin/python3"
+
+##
+## GLOBAL
+##
+
+home: "/home/dockuser"
+REGISTRY_URL: 'cb-registry.yaya.yo'
+REGISTRY_USER: "{{ lookup('env', 'registry_login') }}"
+REGISTRY_PWD: "{{ lookup('env', 'registry_password') }}"
+
+##
+## BINGOOOOO
+##
+bingo_dir: "{{ home }}/bingo"
+
+
+
+##
+## postgres
+##
+db_host: "cb-wiki01.yaya.yo"
+pg_dir: "{{ home }}/postgres"
+pg_data_dir: "{{ pg_dir }}/postgres"
+
+
+##
+## NGINX
+##
+nginx_home: "{{ home }}/nginx"

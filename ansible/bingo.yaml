@@ -1,0 +1,37 @@
+---
+- name: kafka deployment roles
+  hosts: "{{ host }}"
+  # remote_user: 
+  # become: true
+  # become_user: dockuser
+  roles:
+    - role: deploy_nginx
+      tags:
+        - deploy_nginx
+        - deploy
+    - role: restart_nginx
+      tags:
+        - restart_nginx
+    - role: erase_nginx
+      tags:
+        - erase_nginx
+    - role: deploy_postgres
+      tags:
+        - deploy_postgres
+        - deploy
+    - role: restart_postgres
+      tags:
+        - restart_postgres
+    - role: erase_postgres
+      tags:
+        - erase_postgres
+    - role: deploy_bingo
+      tags:
+        - deploy_bingo
+        - deploy
+    - role: restart_bingo
+      tags:
+        - restart_bingo
+    - role: erase_bingo
+      tags:
+        - erase_bingo

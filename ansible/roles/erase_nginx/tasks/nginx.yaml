@@ -1,0 +1,12 @@
+- name: "Delete contaner"
+  docker_compose:
+    project_src: "{{ nginx_home }}"
+    build: no
+    state: absent
+  when: "inventory_hostname in groups.get('nginx', [])"
+
+- name: Delete persistent directories for nginx {{ nginx_home }}
+  file:
+    path: '{{ nginx_home }}/'
+    state: absent
+  when: "inventory_hostname in groups.get('nginx', [])"

@@ -1,0 +1,24 @@
+---
+- name: Create persistent directories for postgres
+  file:
+    path: '{{ item }}'
+    state: directory
+    recurse: yes
+  with_items:
+    - "{{ pg_dir }}"
+    - "{{ pg_data_dir }}"
+  when: "inventory_hostname in groups.get('postgres', [])"
+
+- name: Copy content of directory 'files'
+  copy:
+    src: files/postgres/
+    dest: "{{ pg_dir }}/"
+  when: "inventory_hostname in groups.get('postgres', [])"
+
+- name: "Create PGS contaner on {{ inventory_hostname }}"
+  docker_compose:
+    project_src: "{{ pg_dir }}"
+    build: yes
+    nocache: yes
+    recreate: always
+  when: "inventory_hostname in groups.get('postgres', [])"

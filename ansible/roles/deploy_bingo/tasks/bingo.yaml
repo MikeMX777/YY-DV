@@ -1,0 +1,53 @@
+---
+- name: command
+  command: echo 'BINGO'
+  when: "inventory_hostname in groups.get('nodes', [])"
+
+- name: Create persistent directories for bingo
+  file:
+    path: '{{ item }}'
+    state: directory
+    recurse: yes
+  with_items:
+    - "{{ bingo_dir }}"
+  when: "inventory_hostname in groups.get('nodes', [])"
+
+- name: Copy content of directory 'files'
+  copy:
+    src: files/bingo/
+    dest: "{{ bingo_dir }}/"
+  when: "inventory_hostname in groups.get('nodes', [])"
+
+- name: Copy content of directory 'files'
+  copy:
+    src: files/bingo/logs
+    dest: "{{ bingo_dir }}/"
+    mode: 0777
+  when: "inventory_hostname in groups.get('nodes', [])"
+
+- name: "Create contaner on {{ inventory_hostname }}"
+  docker_compose:
+    project_src: "{{ bingo_dir }}"
+    build: yes
+    nocache: yes
+    recreate: always
+  when: "inventory_hostname in groups.get('nodes', [])"
+
+- name: "Copy CRONtab to {{ inventory_hostname }}"
+  template:
+    src: "crontab.in.j2"
+    dest: "{{ bingo_dir }}/crontab.in"
+    mode: 0664
+  when: "inventory_hostname in groups.get('nodes', [])"
+
+- name: "Copy logrotate to {{ inventory_hostname }}"
+  template:
+    src: "logrotate.conf.j2"
+    dest: "{{ bingo_dir }}/logrotate.conf"
+    mode: 0664
+  when: "inventory_hostname in groups.get('nodes', [])"
+
+- name: "Create crontab for log-rotate {{ inventory_hostname }}"
+  shell: "crontab {{ bingo_dir }}/crontab.in"
+  when: "inventory_hostname in groups.get('nodes', [])"
+
